@@ -150,8 +150,9 @@ public class ScalableContentPane extends Region {
             requestScale();
         };
 
-        getContentScaleTransform().setOnTransformChanged((event) -> {
+        getContentScaleTransform().setOnTransformChanged(event -> {
             requestLayout();
+            setNeedsLayout(false);
         });
 
         minScaleXProperty().addListener(changeListener);
@@ -350,23 +351,23 @@ public class ScalableContentPane extends Region {
         final ChangeListener<Bounds> boundsListener =
                 (ov, oldValue, newValue) -> {
             if (isAutoRescale()) {
-                setNeedsLayout(false);
                 if (getContent() instanceof Region) {
                     ((Region) getContent()).requestLayout();
                 }
 
                 requestLayout();
+                setNeedsLayout(false);
             }
         };
 
         final ChangeListener<Number> numberListener =
                 (ov, oldValue, newValue) -> {
             if (isAutoRescale()) {
-                setNeedsLayout(false);
                 if (getContent() instanceof Parent) {
                     ((Parent) getContent()).requestLayout();
                 }
                 requestLayout();
+                setNeedsLayout(false);
             }
         };
 
