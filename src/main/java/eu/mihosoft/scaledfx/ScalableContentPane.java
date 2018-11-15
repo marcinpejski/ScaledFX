@@ -60,7 +60,7 @@ public class ScalableContentPane extends Region {
             = new SimpleObjectProperty<>();
     private double contentScaleWidth = 1.0;
     private double contentScaleHeight = 1.0;
-    private boolean aspectScale = true;
+    private final BooleanProperty aspectScale = new SimpleBooleanProperty(true);
     private boolean autoRescale = true;
     private final DoubleProperty minScaleXProperty
             = new SimpleDoubleProperty(Double.MIN_VALUE);
@@ -107,6 +107,11 @@ public class ScalableContentPane extends Region {
 
         scaleBehaviorProperty().addListener((ov, oldV, newV) -> {
             requestLayout();
+        });
+
+        aspectScaleProperty().addListener((ov, oldV, newV) -> {
+            requestLayout();
+            setNeedsLayout(false);
         });
     }
 
@@ -416,7 +421,7 @@ public class ScalableContentPane extends Region {
      * <code>false</code> otherwise
      */
     public boolean isAspectScale() {
-        return aspectScale;
+        return aspectScale.get();
     }
 
     /**
@@ -425,7 +430,7 @@ public class ScalableContentPane extends Region {
      * @param aspectScale the state to set
      */
     public void setAspectScale(boolean aspectScale) {
-        this.aspectScale = aspectScale;
+        this.aspectScale.setValue(aspectScale);
     }
 
     /**
@@ -445,6 +450,10 @@ public class ScalableContentPane extends Region {
      */
     public void setAutoRescale(boolean autoRescale) {
         this.autoRescale = autoRescale;
+    }
+
+    public BooleanProperty aspectScaleProperty() {
+        return aspectScale;
     }
 
     public DoubleProperty minScaleXProperty() {
